@@ -49,6 +49,7 @@ $ python manage.py runserver
 ```
 $ python manage.py runserver
 ```
+Do not forget to setup your SECRET_KEY in settings.py. If it aleady set then ok.
 Now you are good to go. Having knowledge on frontend technologies such as Javascript is added benefit but you can use google for any kind of need as I did.
 ## Features!
 
