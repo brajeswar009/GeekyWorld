@@ -3,7 +3,7 @@
 
 [![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
 
->GeekyWorld is a tech blog where user can get updated news related to their field of interest.
+>GeekyWorld is a tech blog where user can get latest updated news related to their field of interest.
 ## Table of contents
 * [General info](#general-info)
 * [Technologies](#technologies)
