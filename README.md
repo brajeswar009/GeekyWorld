@@ -32,7 +32,20 @@ After successful installation of python, you just have to install all used packa
 ```
 $ python -m pip install -r requirements.txt
 ```
-to run the programm just type below code;
+to see the GeekyWorld in action just type below codes in your console;
+
+First run makemigrations to package all your model related changes into individual migrations file
+```
+$ python manage.py makemigrations
+```
+then run migrate to apply all those migrations file to commit changes into database.
+```
+$ python manage.py migrate
+```
+atlast just type runserver in your console to start the Django local server;
+```
+$ python manage.py runserver
+```
 ```
 $ python manage.py runserver
 ```
