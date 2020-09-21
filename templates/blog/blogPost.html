@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block title %} contact {% endblock title %}
+{% block blogactive %} active {% endblock blogactive %}
+{% block body %}
+{% load humanize %}
+{% load extras %}
+
+<div class="container my-4">
+  <h2 class="blog-post-title">{{post.title|safe}}</h2>
+  <p class="blog-post-meta">{{post.timeStamp}} by <a href="/about">{{post.author}}</a></p>
+
+<!-- to render posts in appropriate html format and to avoid it from going into html safe, django safe filter is used -->
+  <p>{{post.content|safe}}</p>  
+  <hr>
+</div>
+
+<div class="container">
+  <h3>Responses ({{comments.count}})</h3>
+  <div class="my-2">
+    {% if user.is_authenticated %}
+    <form action="/blog/postComment" method="POST">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="comment"></label>
+        <input type="text" name="comment" class="form-control" placeholder="What are your thoughts?">
+      </div>
+      <input type="hidden" name="postSno" value="{{post.sno}}">
+      <input type="hidden" name="parentSno" value="">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    {% else %}
+    <p>Please LogIn to post a comment.</p>
+    {% endif %}
+  </div>
+  {% load static %}
+  {% for comment in comments %}
+  <div class="row my-3">
+    <div class="col-md-1">
+      <img class="rounded-circle w-100 p-2 border border-secondary" src="{% static 'images/user.png' %}" alt="My image">
+    </div>
+    {% comment %} naturaltime filter is used {% endcomment %}
+    <div class="col-md-11"><b>{{comment.user.username}}</b> <small>{{comment.timestamp|naturaltime}}</small>
+      <div>{{comment.comment}}
+      </div>
+      <div class="reply mx-0">
+
+         {% if user.is_authenticated %} 
+          <button class="btn btn-sm btn-primary my-1" type="button" data-toggle="collapse" data-target="#replyBox{{comment.sno}}" aria-expanded="false" aria-controls="replyBox{{comment.sno}}">
+            Reply
+          </button>
+        <div class="collapse" id="replyBox{{comment.sno}}">
+          <div class="card card-body my-2">
+            <form action="/blog/postComment" method="POST">
+              {% csrf_token %}
+              <div class="form-group">
+                <label for="comment">Reply</label>
+                <input type="text" name="comment" class="form-control" placeholder="What are your thoughts?">
+                <input type="hidden" name="parentSno" value="{{comment.sno}}">
+              </div>
+              <input type="hidden" name="postSno" value="{{post.sno}}">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+          </div>
+        </div>
+        {% else %}
+          <button class="btn btn-sm btn-primary my-1" type="button" data-toggle="collapse" data-target="#replyBox{{comment.sno}}" aria-expanded="false" aria-controls="replyBox{{comment.sno}} disabled">
+            LogIn to reply
+          </button>
+        {% endif %}
+        
+        <div class="replies my-2">
+        {% comment %} get_val custom filter is used {% endcomment %}
+        {% for reply in replyDict|get_val:comment.sno %}
+        <div class="row my-2">
+        <div class="col-md-1">
+              <img class="rounded-circle w-75 p-2 border border-secondary" src="{% static 'images/user.png' %}" alt="My image">
+         </div>
+         <div class="col-md-11 my-1">
+          {% comment %} {{reply.comment}} {% endcomment %}
+            <b>{{reply.user.username}}</b> <small> {{reply.timestamp|naturaltime}}</small>
+      <div>{{reply.comment}}</div>
+          </div>
+        </div>
+        {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+
+</div>
+{% endblock body %}

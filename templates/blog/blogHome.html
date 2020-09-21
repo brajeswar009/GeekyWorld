@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %} contact {% endblock title %}
+
+{% block js %}
+<script>
+    let previews = document.getElementsByClassName('preview');
+    Array.from(previews).forEach((element)=>{
+        element.innerHTML = element.innerText;
+    })
+    
+</script>
+{% endblock js %}
+
+{% block blogactive %} active {% endblock blogactive %}
+{% block body %}
+<div class="container my-3">
+<h3>Recent Blogs by GeekyWorld:</h3>
+{% for post in allPosts %}
+
+    <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+        <div class="col p-4 d-flex flex-column position-static">
+            <strong class="d-inline-block mb-2 text-primary">Article by {{post.author}}</strong>
+            <h3 class="mb-0"><div class="preview">{{post.title|safe}}</div></h3>
+            <div class="mb-1 text-muted">{{post.timeStamp }}</div>
+            <!-- truncatechars will shorten the characters by given number it is same as doing slicing -->
+            <!-- truncatechars comes under django filters -->
+            <p class="card-text mb-auto"><div class="preview">{{post.content|safe|truncatechars:200}}</div></p>
+            <a href="/blog/{{post.slug}}" class="stretched-link my-2">Continue reading</a>
+        </div>
+    </div>
+  
+    {% endfor %}
+</div>
+{% endblock body %}
