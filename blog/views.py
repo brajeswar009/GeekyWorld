@@ -5,14 +5,14 @@ from blog.templatetags import extras
 
 # Create your views here.
 def blogHome(request):
-    allPosts = Post.objects.all()
-    context = {'allPosts':allPosts}
+    allPosts = Post.objects.all()   # returns all the posts created in admin panel as objects
+    context = {'allPosts':allPosts} # used to send the variables to blogHome template to render 
     return render(request, 'blog/blogHome.html', context)
 
 def blogPost(request, slug):
     # this is will generate only the string part of the QuerySet which is the returned 
     # value as __str__ in model
-    post = Post.objects.filter(slug=slug).first()
+    post = Post.objects.filter(slug=slug).first()   # gives the first element of queryset as a return
     comments = BlogComment.objects.filter(post=post, parent=None)
     replies = BlogComment.objects.filter(post=post).exclude(parent=None)
     replyDict = {}    # reply dictionary
